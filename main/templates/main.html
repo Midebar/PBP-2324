@@ -2,10 +2,13 @@
 <h1>Book Tracker Page</h1>
 
 <h5>Name:</h5>
-<p>{{name}}</p>
+<p>{{ name }}</p>
 
 <h5>Class:</h5>
-<p>{{class}}</p>
+<p>{{ class }}</p>
+
+<h5>Sesi terakhir login:</h5>
+<p> {{ last_login }}</p>
 
 <table>
   <tr>
@@ -16,7 +19,8 @@
   </tr>
 
   {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini
-  {%endcomment %} {% for book in books %}
+  {%endcomment %} 
+  {% for book in books %}
   <tr>
     <td>{{book.name}}</td>
     <td>{{book.page}}</td>
@@ -30,6 +34,10 @@
 
 <a href="{% url 'main:create_book' %}">
   <button>Add New Book</button>
+</a>
+
+<a href="{% url 'main:logout' %}">
+  <button>Logout</button>
 </a>
 
 {% endblock content %}

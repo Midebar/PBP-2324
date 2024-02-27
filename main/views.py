@@ -37,6 +37,29 @@ def create_book(request):
     context = {'form': form}
     return render(request, "create_book.html", context)
 
+def edit_book(request, id):
+    # Get book berdasarkan ID
+    book = Book.objects.get(pk = id)
+
+    # Set book sebagai instance dari form
+    form = BookForm(request.POST or None, instance=book)
+
+    if form.is_valid() and request.method == "POST":
+        # Simpan form dan kembali ke halaman awal
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_book.html", context)
+
+def delete_book(request, id):
+    # Get data berdasarkan ID
+    book = Book.objects.get(pk = id)
+    # Hapus data
+    book.delete()
+    # Kembali ke halaman awal
+    return HttpResponseRedirect(reverse('main:show_main'))
+
 def show_xml(request):
     data = Book.objects.all()
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")

@@ -25,6 +25,7 @@ def show_main(request):
 
     return render(request, "main.html", context)
 
+@login_required(login_url='/login')
 def create_book(request):
     form = BookForm(request.POST or None)
 
@@ -37,6 +38,7 @@ def create_book(request):
     context = {'form': form}
     return render(request, "create_book.html", context)
 
+@login_required(login_url='/login')
 def edit_book(request, id):
     # Get book berdasarkan ID
     book = Book.objects.get(pk = id)
@@ -52,6 +54,7 @@ def edit_book(request, id):
     context = {'form': form}
     return render(request, "edit_book.html", context)
 
+@login_required(login_url='/login')
 def delete_book(request, id):
     # Get data berdasarkan ID
     book = Book.objects.get(pk = id)

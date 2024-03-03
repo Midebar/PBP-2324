@@ -28,12 +28,12 @@
     <td>{{book.date_added}}</td>
     <td>
       <a href="{% url 'main:edit_book' book.pk %}">
-          <button>
+          <button type="button" class="btn btn-primary">
               Edit
           </button>
       </a>
       <a href="{% url 'main:delete_book' book.pk %}">
-            <button>
+            <button type="button" class="btn btn-danger">
                 Delete
             </button>
         </a>
@@ -45,7 +45,7 @@
 <br/>
 
 <a href="{% url 'main:logout' %}">
-  <button>Logout</button>
+  <button type="button" class="btn btn-outline-primary">Logout</button>
 </a>
 
 {% endblock content %}

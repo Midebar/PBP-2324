@@ -1,6 +1,17 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'main/css/custom.css' %}">
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/">Book Tracker</a>
+      <a class="navbar-brand" href="/">{% include 'books_icon.html' %}</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -8,10 +19,10 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           {% with app_name=request.resolver_match.app_name url_name=request.resolver_match.url_name %}
           <li class="nav-item">
-            <a class="nav-link {% if app_name == 'main' and url_name == 'show_main' %}active{% endif %}" href="{% url 'main:show_main' %}">Home</a>
+            <a class="nav-link {% if app_name == 'main' and url_name == 'show_main' %}active custom_li{% endif %}" href="{% url 'main:show_main' %}">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if app_name == 'main' and url_name == 'create_book' %}active{% endif %}" href="{% url 'main:create_book' %}">Add a Book</a>
+            <a class="nav-link {% if app_name == 'main' and url_name == 'create_book' %}active custom_li{% endif %}" href="{% url 'main:create_book' %}">Add a Book</a>
           </li>
           <!-- <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -36,3 +47,6 @@
       </div>
     </div>
   </nav>
+  
+</body>
+</html>

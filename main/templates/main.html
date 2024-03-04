@@ -1,5 +1,9 @@
 {% extends 'base.html' %} 
 
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'main/css/custom.css' %}">
+
 {% block content %}
 <h1>Book Tracker Page</h1>
 
@@ -11,43 +15,27 @@
 
 <h5>Sesi terakhir login:</h5>
 <p> {{ last_login }}</p>
-
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Page</th>
-    <th>Description</th>
-    <th>Date Added</th>
-  </tr>
-
-  {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini
-  {%endcomment %} 
-  {% for book in books %}
-  <tr>
-    <td>{{book.name}}</td>
-    <td>{{book.page}}</td>
-    <td>{{book.description}}</td>
-    <td>{{book.date_added}}</td>
-    <td>
-      <a href="{% url 'main:edit_book' book.pk %}">
+  <div class="card-box">
+    {% for book in books %}
+    <div class="card">
+      <div class="card-content">
+        <h3 class="card-title">Name: {{book.name}}</h3> 
+        <h3 class="card-page">Page: {{book.page}}</h3>
+        <h4>Date Added: {{book.date_added}}</h4>
+        <p class="card-description">Description: {{book.description}}</p>
+        <a href="{% url 'main:edit_book' book.pk %}">
           <button type="button" class="btn btn-primary">
-              Edit
+            Edit
           </button>
-      </a>
-      <a href="{% url 'main:delete_book' book.pk %}">
-            <button type="button" class="btn btn-danger">
-                Delete
-            </button>
         </a>
-    </td>
-  </tr>
+        <a href="{% url 'main:delete_book' book.pk %}">
+          <button type="button" class="btn btn-danger">
+            Delete
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
   {% endfor %}
-</table>
-
-<br/>
-
-<a href="{% url 'main:logout' %}">
-  <button type="button" class="btn btn-outline-primary">Logout</button>
-</a>
 
 {% endblock content %}

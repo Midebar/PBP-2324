@@ -1,8 +1,10 @@
 {% extends 'base.html' %} 
-
 {% load static %}
 
 <link rel="stylesheet" href="{% static 'main/css/custom.css' %}">
+<script src="{% static 'main/js/main.js' %}">
+  document.getElementsByClassName("card-box").innerHTML = refreshBooks()
+</script>  
 
 {% block content %}
 <h1>Book Tracker Page</h1>
@@ -15,27 +17,9 @@
 
 <h5>Sesi terakhir login:</h5>
 <p> {{ last_login }}</p>
-  <div class="card-box">
-    {% for book in books %}
-    <div class="card">
-      <div class="card-content">
-        <h3 class="card-title">Name: {{book.name}}</h3> 
-        <h3 class="card-page">Page: {{book.page}}</h3>
-        <h4>Date Added: {{book.date_added}}</h4>
-        <p class="card-description">Description: {{book.description}}</p>
-        <a href="{% url 'main:edit_book' book.pk %}">
-          <button type="button" class="btn btn-primary">
-            Edit
-          </button>
-        </a>
-        <a href="{% url 'main:delete_book' book.pk %}">
-          <button type="button" class="btn btn-danger">
-            Delete
-          </button>
-        </a>
-      </div>
-    </div>
-  </div>
-  {% endfor %}
+<div class="card-box">
+</div>
+
+<button onclick="refreshBooks()">Click me!</button>
 
 {% endblock content %}

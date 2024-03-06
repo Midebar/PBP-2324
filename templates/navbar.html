@@ -1,12 +1,6 @@
 {% load static %}
 
 <link rel="stylesheet" href="{% static 'main/css/custom.css' %}">
-
-<script src="{% static 'main/js/main.js' %}">
-  console.log("Called")
-  document.getElementById("button_add").onclick = addBook
-</script>  
-
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">{% include 'books_icon.html' %}</a>
@@ -47,35 +41,64 @@
       </div>
     </div>
   </nav>
-  
+
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Book</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                  <form id="form" onsubmit="return false;">
-                      {% csrf_token %}
-                      <div class="mb-3">
-                          <label for="name" class="col-form-label">Name:</label>
-                          <input type="text" class="form-control" id="name" name="name"></input>
-                      </div>
-                      <div class="mb-3">
-                          <label for="page" class="col-form-label">Page:</label>
-                          <input type="number" class="form-control" id="page" name="page"></input>
-                      </div>
-                      <div class="mb-3">
-                          <label for="description" class="col-form-label">Description:</label>
-                          <textarea class="form-control" id="description" name="description"></textarea>
-                      </div>
-                  </form>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Book</button>
-              </div>
-          </div>
-      </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Book</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form" onsubmit="return false;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="page" class="col-form-label">Page:</label>
+                        <input type="number" class="form-control" id="page" name="page"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="col-form-label">Description:</label>
+                        <textarea class="form-control" id="description" name="description"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Book</button>
+            </div>
+        </div>
+    </div>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Assign addBook function to the click event of "Add Book" button
+        document.getElementById("button_add").addEventListener("click", addBook);
+    });
+
+    function addBook() {
+        fetch("{% url 'main:add_book_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        }).then(() => {
+            // Reset the form fields
+            document.getElementById("form").reset();
+
+            // Close the modal
+            var modal = document.getElementById("exampleModal");
+            var modalInstance = bootstrap.Modal.getInstance(modal);
+            modalInstance.hide();
+
+            // Reload the page
+            location.reload();
+        }).catch(error => {
+            console.error('Error adding book:', error);
+        });
+
+        return false; // Prevent default form submission
+    }
+</script>

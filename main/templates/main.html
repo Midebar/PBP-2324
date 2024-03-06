@@ -1,10 +1,8 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
+
 {% load static %}
 
 <link rel="stylesheet" href="{% static 'main/css/custom.css' %}">
-<script src="{% static 'main/js/main.js' %}">
-  document.getElementsByClassName("card-box").innerHTML = refreshBooks()
-</script>  
 
 {% block content %}
 <h1>Book Tracker Page</h1>
@@ -17,9 +15,47 @@
 
 <h5>Sesi terakhir login:</h5>
 <p> {{ last_login }}</p>
+
 <div class="card-box">
 </div>
 
-<button onclick="refreshBooks()">Click me!</button>
+<script>
+async function getBooks() {
+  let url = "{% url 'main:show_json' %}"
+  const res = await fetch(url)
+  return await res.json()
+}
 
+async function refreshBooks() {
+  const books = await getBooks()
+  let htmlString = ""
+  books.forEach((book) => {
+    const editUrl = `{% url 'main:edit_book' 0 %}`.replace('0', book.pk);
+    const deleteUrl = `{% url 'main:delete_book' 0 %}`.replace('0', book.pk);
+    htmlString += `
+    <div class="card">
+      <div class="card-content">
+        <h3 class="card-title">Name: ${book.fields.name}</h3> 
+        <h3 class="card-page">Page: ${book.fields.page}</h3>
+        <h4>Date Added: ${book.fields.date_added}</h4>
+        <p class="card-description">Description: ${book.fields.description}</p>
+        <a href="${editUrl}">
+          <button type="button" class="btn btn-primary">
+            Edit
+          </button>
+        </a>
+        <a href="${deleteUrl}">
+          <button type="button" class="btn btn-danger">
+            Delete
+          </button>
+        </a>
+      </div>
+    </div>` 
+  })
+  return htmlString;
+}
+document.addEventListener("DOMContentLoaded", async function() {
+  document.querySelector(".card-box").innerHTML = await refreshBooks();
+});
+</script>
 {% endblock content %}

@@ -1,7 +1,8 @@
 import datetime
+import json
 
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, JsonResponse
 from django.core import serializers
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -130,3 +131,22 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
+@csrf_exempt
+def create_book_flutter(request):
+    if request.method == 'POST':
+
+        data = json.loads(request.body)
+
+        new_book = Book.objects.create(
+            user = request.user,
+            name = data["name"],
+            page = int(data["page"]),
+            description = data["description"]
+        )
+
+        new_book.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
